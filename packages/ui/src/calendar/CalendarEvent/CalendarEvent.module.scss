@@ -1,0 +1,39 @@
+.root {
+  border-left: 8px solid rgb(255 255 255 / 80%);
+  border-radius: 4px;
+  width: 100%;
+  opacity: 0.7;
+  transition: all 0.1s ease-in;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &_selected {
+    opacity: 1;
+    border-left-width: 16px;
+    border-color: rgb(255 255 255 / 50%);
+  }
+
+  &__content {
+    min-width: 0;
+    flex: 1;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  &__text {
+    &_overflow {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

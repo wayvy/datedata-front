@@ -1,0 +1,50 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  border: 1px solid var(--g-color-line-generic);
+  overflow: hidden;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+
+  &:hover {
+    background-color: var(--g-color-base-selection);
+  }
+
+  &_selected {
+    border-color: var(--g-color-line-brand);
+  }
+
+  &_today {
+    background-color: var(--g-color-base-info-light);
+  }
+}
+
+.day {
+  width: 100%;
+  text-align: right;
+  margin: 4px 0;
+  padding: 0 0 0 2px;
+
+  &__value {
+    // display: inline-flex;
+    // align-items: center;
+    // justify-content: center;
+  }
+
+  &_today &__value {
+    // background-color: var(--g-color-base-brand);
+  }
+}
+
+.events-all-day {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+}

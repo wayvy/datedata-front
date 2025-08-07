@@ -1,0 +1,15 @@
+.root {
+  height: 100%;
+  overflow: hidden;
+
+  // border: 1px solid red;
+
+  &__panel {
+    height: 100%;
+    position: relative;
+
+    // overflow-x: hidden;
+    // overflow-y: scroll;
+    // scroll-snap-type: y mandatory;
+  }
+}

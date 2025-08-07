@@ -1,0 +1,46 @@
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 0 0 8px;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    :global(.g-select-control__label),
+    :global(.g-text-input__label) {
+      min-width: 80px;
+      text-align: left;
+      margin: 0;
+    }
+
+    :global(.g-select-control__label) {
+      padding-left: 12px;
+    }
+
+    :global(.g-select-control) {
+      padding-left: 0;
+    }
+
+    :global(.g-text-input__additional-content_placement_end) {
+      padding-inline-end: 4px;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__date {
+    width: 100%;
+  }
+
+  &__switch {
+    align-self: flex-start;
+  }
+}

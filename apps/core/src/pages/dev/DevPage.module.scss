@@ -1,0 +1,5 @@
+.root {
+  &:global(.g-date-date-picker__time-field-wrapper) {
+    display: none;
+  }
+}

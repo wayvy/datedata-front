@@ -1,0 +1,43 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  transform: translateZ(0);
+
+  &__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    margin: 16px 0;
+  }
+
+  &__day-name {
+    font-size: clamp(8px, 1.5vw, 12px);
+    line-height: clamp(8px, 1.5vw, 12px);
+    text-align: center;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    height: 100%;
+  }
+
+  &__day {
+    font-size: clamp(10px, 1.5vw, 12px);
+    line-height: clamp(10px, 1.5vw, 12px);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_today {
+      background-color: blue;
+    }
+
+    &_prev,
+    &_next {
+      opacity: 0;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 8px;
+
+  &__tabs {
+    flex-wrap: unset;
+    flex-shrink: 0;
+  }
+}

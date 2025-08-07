@@ -1,0 +1,22 @@
+.root {
+  :global(.g-button_selected) {
+    position: relative;
+
+    &::before {
+      content: "●";
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+    }
+  }
+
+  &__option {
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+  }
+}

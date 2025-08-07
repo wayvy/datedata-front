@@ -1,0 +1,9 @@
+.root {
+  :global(.gn-aside-header__pane-container) {
+    height: 100svh !important;
+  }
+
+  :global(.gn-aside-header__aside) {
+    height: 100% !important;
+  }
+}

@@ -1,0 +1,19 @@
+.root {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+
+  &__inner {
+    max-width: 480px;
+    width: 100%;
+  }
+
+  &__controls {
+    padding: 8px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

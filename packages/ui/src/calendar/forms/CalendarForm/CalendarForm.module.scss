@@ -1,0 +1,17 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 0 8px;
+  width: 100%;
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__submit {
+    margin: 8px 0 0;
+  }
+}

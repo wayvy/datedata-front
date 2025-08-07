@@ -1,0 +1,10 @@
+{
+  "name": "@repo/typescript-config",
+  "description": "DateData TypeScript configuration",
+  "version": "0.0.0",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
