@@ -1,0 +1,19 @@
+@use "reset";
+@use "gravity-ui";
+
+html,
+body {
+  text-size-adjust: 100%;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  background-color: #221d22;
+}
+
+#root {
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+}

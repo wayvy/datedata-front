@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(1.953125,0,0,1.953125,0,0)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512"><svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" aria-label="Calendar with star icon"><rect width="416" height="128" x="48" y="40" fill="#f37880" stroke="#000" stroke-width="20" rx="28" ry="28"></rect><rect width="40" height="80" x="88" y="8" fill="#e9e9ee" stroke="#000" stroke-width="12" rx="20"></rect><rect width="40" height="80" x="236" y="8" fill="#e9e9ee" stroke="#000" stroke-width="12" rx="20"></rect><rect width="40" height="80" x="384" y="8" fill="#e9e9ee" stroke="#000" stroke-width="12" rx="20"></rect><rect width="416" height="292" x="48" y="160" fill="#fff" stroke="#000" stroke-width="20" rx="36" ry="36"></rect><circle cx="256" cy="192" r="10"></circle><rect width="96" height="20" x="140" y="184" rx="10"></rect><rect width="96" height="20" x="276" y="184" rx="10"></rect><path fill="#ffd28a" stroke="#000" stroke-linejoin="round" stroke-width="18" d="m256 232 25 60h63l-50 40 18 64-56-36-56 36 18-64-50-40h63z"></path><rect width="416" height="24" x="48" y="444" fill="#e9e9ee" stroke="#000" stroke-width="8" rx="12" ry="12"></rect></svg></svg></g></g></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1338)"><rect width="1000" height="1000" fill="#ffffff"></rect><g transform="matrix(1.953125,0,0,1.953125,0,0)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512"><svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" aria-label="Calendar with star icon"><rect width="416" height="128" x="48" y="40" fill="#f37880" stroke="#000" stroke-width="20" rx="28" ry="28"></rect><rect width="40" height="80" x="88" y="8" fill="#e9e9ee" stroke="#000" stroke-width="12" rx="20"></rect><rect width="40" height="80" x="236" y="8" fill="#e9e9ee" stroke="#000" stroke-width="12" rx="20"></rect><rect width="40" height="80" x="384" y="8" fill="#e9e9ee" stroke="#000" stroke-width="12" rx="20"></rect><rect width="416" height="292" x="48" y="160" fill="#fff" stroke="#000" stroke-width="20" rx="36" ry="36"></rect><circle cx="256" cy="192" r="10"></circle><rect width="96" height="20" x="140" y="184" rx="10"></rect><rect width="96" height="20" x="276" y="184" rx="10"></rect><path fill="#ffd28a" stroke="#000" stroke-linejoin="round" stroke-width="18" d="m256 232 25 60h63l-50 40 18 64-56-36-56 36 18-64-50-40h63z"></path><rect width="416" height="24" x="48" y="444" fill="#e9e9ee" stroke="#000" stroke-width="8" rx="12" ry="12"></rect></svg></svg></g></g><defs><clipPath id="SvgjsClipPath1338"><rect width="1000" height="1000" x="0" y="0" rx="200" ry="200"></rect></clipPath></defs></svg></g></svg>

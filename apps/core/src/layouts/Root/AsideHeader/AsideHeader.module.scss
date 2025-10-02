@@ -1,0 +1,13 @@
+.root {
+  :global(.gn-aside-header__pane-container) {
+    height: 100svh !important;
+  }
+
+  :global(.gn-aside-header__aside) {
+    height: 100% !important;
+  }
+
+  :global(.gn-logo img) {
+    border-radius: 4px;
+  }
+}

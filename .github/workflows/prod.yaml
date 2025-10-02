@@ -1,0 +1,136 @@
+name: Core Prod
+
+on:
+  push:
+    tags:
+      - 'release/*'
+
+env:
+  APP: core
+  API_URL: https://datedata.dev/api
+
+jobs:
+  setup:
+    runs-on: self-hosted
+    steps:
+      - name: Actions checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Docker Buildx Action
+        uses: docker/setup-buildx-action@v3
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+
+  setup-env:
+    runs-on: self-hosted
+    needs: setup
+    outputs:
+      release_name: ${{ steps.tag-env.outputs.release_name }}
+      host: ${{ steps.tag-env.outputs.host }}
+      namespace: ${{ steps.tag-env.outputs.namespace }}
+      image_tag: ${{ steps.tag-env.outputs.image_tag }}
+
+    steps:
+      - name: Setup tag environment
+        id: tag-env
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/release/* ]]; then
+            RELEASE_NAME="core"
+            HOST="datedata.dev"
+            NAMESPACE="prod"
+            IMAGE_TAG=$(echo "${GITHUB_REF#refs/tags/}" | tr '[:upper:]' '[:lower:]' | sed 's|/|-|g')
+          else
+            echo "Error: Not a release tag"
+            exit 1
+          fi
+
+          echo "release_name=${RELEASE_NAME}" >> "$GITHUB_OUTPUT"
+          echo "host=${HOST}" >> "$GITHUB_OUTPUT"
+          echo "namespace=${NAMESPACE}" >> "$GITHUB_OUTPUT"
+          echo "image_tag=${IMAGE_TAG}" >> "$GITHUB_OUTPUT"
+
+  build:
+    runs-on: self-hosted
+    needs: setup-env
+    steps:
+      - name: Docker build & push
+        run: |
+          if [[ -z "${{ secrets.DOCKER_USERNAME }}" ]]; then
+            echo "Error: DOCKER_USERNAME is not set"
+            exit 1
+          fi
+
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/datedata-front:${{ needs.setup-env.outputs.image_tag }} --build-arg APP=${{ env.APP }} --build-arg API_URL=${{ env.API_URL }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/datedata-front:${{ needs.setup-env.outputs.image_tag }}
+
+  deploy:
+    runs-on: self-hosted
+    needs: [setup-env, build]
+    steps:
+      - name: Configure kubectl
+        run: |
+          if [[ -z "${{ secrets.KUBE_CONFIG_DATA }}" ]]; then
+            echo "Error: KUBE_CONFIG_DATA secret is not set"
+            exit 1
+          fi
+
+          mkdir -p $HOME/.kube
+
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > $HOME/.kube/config
+          if [[ $? -ne 0 ]]; then
+            echo "Error: Failed to decode the kubeconfig"
+            exit 1
+          fi
+
+          chmod 600 $HOME/.kube/config
+          kubectl config current-context
+
+      - name: Helm Deploy
+        run: |
+          if [[ -z "${{ needs.setup-env.outputs.namespace }}" ]]; then
+            echo "Error: namespace is not set"
+            exit 1
+          fi
+          if [[ -z "${{ needs.setup-env.outputs.release_name }}" ]]; then
+            echo "Error: release_name is not set"
+            exit 1
+          fi
+          if [[ -z "${{ needs.setup-env.outputs.host }}" ]]; then
+            echo "Error: host is not set"
+            exit 1
+          fi
+
+          kubectl create namespace ${{ needs.setup-env.outputs.namespace }} --dry-run=client -o yaml | kubectl apply -f -
+          helm upgrade --install ${{ needs.setup-env.outputs.release_name }} ./.helm/core \
+            -f ./.helm/core/envs/prod/values.yaml \
+            --kubeconfig $HOME/.kube/config \
+            --namespace ${{ needs.setup-env.outputs.namespace }} \
+            --set image.repository=${{ secrets.DOCKER_USERNAME }}/datedata-front \
+            --set image.tag=${{ needs.setup-env.outputs.image_tag }} \
+            --set ingress.host=${{ needs.setup-env.outputs.host }} \
+            --wait --timeout=300s
+
+  post-deploy:
+    runs-on: self-hosted
+    needs: [setup-env, deploy]
+    steps:
+      - name: Verify deployment
+        run: |
+          if [[ -z "${{ needs.setup-env.outputs.namespace }}" ]]; then
+            echo "Error: namespace is not set"
+            exit 1
+          fi
+          if [[ -z "${{ needs.setup-env.outputs.release_name }}" ]]; then
+            echo "Error: release_name is not set"
+            exit 1
+          fi
+
+          kubectl rollout status deployment/${{ needs.setup-env.outputs.release_name }} -n ${{ needs.setup-env.outputs.namespace }} --timeout=300s
+          
+          if [[ $? -ne 0 ]]; then
+            echo "Error: Deployment failed"
+            exit 1
+          fi
+
+          echo "🚀 Production deployment successful! https://${{ needs.setup-env.outputs.host }}"

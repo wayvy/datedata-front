@@ -1,0 +1,20 @@
+{
+  "name": "@repo/stylelint-config",
+  "description": "DateData Stylelint configuration",
+  "version": "0.0.0",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "main": "index.js",
+  "devDependencies": {
+    "@stylistic/stylelint-plugin": "^3.1.2",
+    "stylelint": "^16.20.0",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-recommended": "^16.0.0",
+    "stylelint-config-standard-scss": "^15.0.1",
+    "stylelint-prettier": "^5.0.3",
+    "stylelint-scss": "^6.12.1"
+  }
+}

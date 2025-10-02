@@ -1,0 +1,39 @@
+name: Cleanup on Branch Delete
+
+on:
+  delete:
+    branches:
+      - feat/*
+      - hotfix/*
+
+jobs:
+  cleanup:
+    runs-on: self-hosted
+    steps:
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Delete namespace
+        run: |
+          BRANCH_NAME="${{ github.event.ref }}"
+          PREFIX=""
+          if [[ "${BRANCH_NAME}" == feat/* ]]; then
+            PREFIX="feat"
+            BRANCH_NAME="${BRANCH_NAME#feat/}"
+          elif [[ "${BRANCH_NAME}" == hotfix/* ]]; then
+            PREFIX="hotfix"
+            BRANCH_NAME="${BRANCH_NAME#hotfix/}"
+          else
+            echo "Branch $BRANCH_NAME does not match feat/* or hotfix/* — skipping namespace deletion."
+            exit 0
+          fi
+
+          SAFE_NAME=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g')
+          NAMESPACE="${PREFIX}-${SAFE_NAME}"
+          echo "Deleting namespace: $NAMESPACE"
+          kubectl delete namespace "$NAMESPACE" --wait || {
+            echo "⚠️ Namespace $NAMESPACE not found"
+          }

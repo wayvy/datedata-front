@@ -1,0 +1,28 @@
+.root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden auto;
+  gap: 4px;
+  padding: 0 4px;
+  user-select: none;
+
+  &__text {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__list {
+    &_all-day {
+      gap: 2px;
+    }
+  }
+
+  &__separator {
+    height: 2px;
+    width: 100%;
+    background-color: var(--g-color-line-generic);
+  }
+}

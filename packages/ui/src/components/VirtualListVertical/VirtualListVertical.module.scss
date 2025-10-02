@@ -1,0 +1,12 @@
+.root {
+  position: relative;
+  overflow-y: auto;
+
+  &__inner {
+    position: relative;
+  }
+}
+
+.item {
+  position: absolute;
+}

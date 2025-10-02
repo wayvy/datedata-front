@@ -1,0 +1,14 @@
+.root {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  user-select: none;
+  transform: translateZ(0);
+
+  &__inner {
+    margin: 0 auto;
+    max-width: 680px;
+  }
+}

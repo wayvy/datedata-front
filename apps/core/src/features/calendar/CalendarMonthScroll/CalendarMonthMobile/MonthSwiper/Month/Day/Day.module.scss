@@ -1,0 +1,68 @@
+.root {
+  $this: &;
+
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  border-bottom: 1px solid var(--g-color-line-generic);
+  cursor: pointer;
+  pointer-events: none;
+
+  &_current-month {
+    pointer-events: auto;
+  }
+
+  &__value {
+    border-radius: 50%;
+    min-width: 24px;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.1s ease-in;
+
+    #{$this}_today & {
+      background: var(--g-color-base-info-medium-hover);
+      color: var(--g-color-text-inverted-primary);
+      font-weight: 600;
+    }
+
+    #{$this}_selected & {
+      border: 2px solid var(--g-color-base-brand);
+    }
+
+    #{$this}_current-month & {
+      opacity: 1;
+    }
+
+    #{$this}_weekend#{$this}_current-month & {
+      opacity: 0.5;
+    }
+
+    #{$this}:hover & {
+      transform: scale(1.1);
+    }
+  }
+
+  &__events {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    margin: auto;
+    width: 8px;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--g-color-line-danger);
+    opacity: 0.5;
+
+    #{$this}_current-month & {
+      opacity: 0.8;
+    }
+  }
+}

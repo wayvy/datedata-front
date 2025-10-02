@@ -1,0 +1,41 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 8px;
+
+  &__checkbox {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+
+    &:global(.g-checkbox_checked .g-checkbox__icon) {
+      background-color: var(--calendar-checkbox-color, var(--g-color-base-brand));
+    }
+
+    &:global(.g-control-label .g-control-label__text) {
+      min-width: 0;
+      flex: 1;
+    }
+  }
+
+  &__edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &__inner {
+    width: 17px;
+    height: 100%;
+  }
+}

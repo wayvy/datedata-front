@@ -1,0 +1,22 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 8px;
+
+  &__header {
+    padding: 4px 0;
+    flex-shrink: 0;
+  }
+
+  &__grid {
+    transform: translateZ(0);
+    user-select: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    flex: 1;
+    gap: 8px;
+  }
+}

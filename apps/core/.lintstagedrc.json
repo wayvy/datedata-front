@@ -1,0 +1,8 @@
+{
+  "*.{js,ts,tsx}": [
+    "eslint --max-warnings 0"
+  ],
+  "*.scss": [
+    "stylelint --max-warnings 0"
+  ]
+}

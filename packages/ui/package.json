@@ -1,0 +1,78 @@
+{
+  "name": "@repo/ui",
+  "description": "DateData UI components package",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build && tsc --project tsconfig.json",
+    "dev": "vite build --watch",
+    "eslint": "eslint \"**/*.js\" \"src/**/*.{ts,tsx}\" --max-warnings 0",
+    "eslint:fix": "eslint --fix \"**/*.js\" \"src/**/*.{ts,tsx}\"",
+    "stylelint": "stylelint \"src/**/*.scss\" --max-warnings 0",
+    "stylelint:fix": "stylelint --fix \"src/**/*.scss\"",
+    "prettier": "prettier --check \"**/*.{js,ts,tsx,scss}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,ts,tsx,scss}\"",
+    "ts-check": "tsc --noEmit -p tsconfig.json",
+    "codestyle": "yarn ts-check && yarn eslint && yarn stylelint && yarn prettier",
+    "codestyle:fix": "yarn ts-check && yarn eslint:fix && yarn stylelint:fix && yarn prettier:fix"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/stylelint-config": "*",
+    "@repo/types": "*",
+    "@repo/typescript-config": "*",
+    "@repo/utils": "*",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.29.0",
+    "postcss": "^8.5.5",
+    "prettier": "^3.5.3",
+    "stylelint": "^16.20.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "dependencies": {
+    "@gravity-ui/date-components": "^3.2.4",
+    "@gravity-ui/date-utils": "^2.5.6",
+    "@gravity-ui/icons": "^2.13.0",
+    "@gravity-ui/uikit": "^7.16.2",
+    "clsx": "^2.1.1",
+    "react-hook-form": "^7.62.0"
+  }
+}

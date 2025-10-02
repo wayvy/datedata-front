@@ -1,0 +1,5 @@
+# .helm/core/Chart.yaml
+apiVersion: v2
+name: core
+description: Core Frontend App
+version: 0.1.0

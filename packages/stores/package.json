@@ -1,0 +1,50 @@
+{
+  "name": "@repo/stores",
+  "description": "DateData stores library",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "eslint": "eslint \"**/*.js\" \"src/**/*.{ts,tsx}\" --max-warnings 0",
+    "eslint:fix": "eslint --fix \"**/*.js\" \"src/**/*.{ts,tsx}\"",
+    "prettier": "prettier --check \"**/*.{js,ts,tsx,scss}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,ts,tsx,scss}\"",
+    "ts-check": "tsc --noEmit -p tsconfig.json",
+    "codestyle": "yarn ts-check && yarn eslint && yarn prettier",
+    "codestyle:fix": "yarn ts-check && yarn eslint:fix && yarn prettier:fix"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/models": "*",
+    "@repo/types": "*",
+    "@repo/typescript-config": "*",
+    "@repo/utils": "*",
+    "eslint": "^9.29.0",
+    "prettier": "^3.5.3",
+    "stylelint": "^16.20.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "jwt-decode": "^4.0.0",
+    "mobx": "^6.13.7"
+  }
+}
