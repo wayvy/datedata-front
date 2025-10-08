@@ -1,30 +1,28 @@
 import { debounce } from '@repo/utils/debounce';
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export const useContainerHeight = (debounceDelay = 100) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState(0);
-
-  const handleResize = useMemo(
-    () =>
-      debounce((height: number) => {
-        if (height > 0 && height !== containerHeight) {
-          setContainerHeight(height);
-        }
-      }, debounceDelay),
-    [debounceDelay, containerHeight],
-  );
 
   useEffect(() => {
     if (!containerRef.current) {
       return;
     }
 
+    const debouncedSetHeight = debounce((height: number) => {
+      setContainerHeight((prev) => {
+        if (height > 0 && height !== prev) {
+          return height;
+        }
+
+        return prev;
+      });
+    }, debounceDelay);
+
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        const newHeight = entry.contentRect.height;
-
-        handleResize(newHeight);
+        debouncedSetHeight(entry.contentRect.height);
       }
     });
 
@@ -36,7 +34,10 @@ export const useContainerHeight = (debounceDelay = 100) => {
       setContainerHeight(initialHeight);
     }
 
-    return () => resizeObserver.disconnect();
+    return () => {
+      resizeObserver.disconnect();
+      debouncedSetHeight.cancel();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

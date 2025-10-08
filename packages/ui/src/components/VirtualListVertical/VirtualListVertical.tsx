@@ -1,5 +1,8 @@
 import clsx from 'clsx';
-import { useRef, useState, UIEvent, useCallback, memo, useEffect, useMemo, CSSProperties, ReactNode } from 'react';
+import { memo, CSSProperties, ReactNode } from 'react';
+
+import { VirtualListItem } from './VirtualListItem';
+import { useVirtualList } from './hooks/useVirtualList';
 
 import s from './VirtualListVertical.module.scss';
 
@@ -26,54 +29,27 @@ const VirtualListVertical: React.FC<VirtualListVerticalProps> = ({
   renderItem,
   initialScrollOffset = 0,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const prevScrollTop = useRef(initialScrollOffset);
-  const [scrollTop, setScrollTop] = useState(initialScrollOffset);
-  const totalHeight = itemCount * itemHeight;
+  const { containerRef, onScroll, startIndex, endIndex, totalHeight } = useVirtualList({
+    itemCount,
+    itemHeight,
+    height,
+    overscan,
+    initialScrollOffset,
+  });
 
-  const onScroll = useCallback((e: UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    const newScrollTop = target.scrollTop;
+  const items = [];
 
-    prevScrollTop.current = newScrollTop;
-    setScrollTop(newScrollTop);
-  }, []);
+  for (let i = startIndex; i <= endIndex; i++) {
+    const style: CSSProperties = {
+      height: itemHeight,
+      width: '100%',
+      position: 'absolute',
+      top: i * itemHeight,
+      left: 0,
+    };
 
-  const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
-  const endIndex = Math.min(itemCount - 1, Math.ceil((scrollTop + height) / itemHeight) + overscan);
-
-  const items = useMemo(() => {
-    const items = [];
-
-    for (let i = startIndex; i <= endIndex; i++) {
-      items.push(
-        <div
-          key={i}
-          data-index={i}
-          className={s.item}
-          style={{
-            top: i * itemHeight,
-            height: itemHeight,
-            width: '100%',
-          }}
-        >
-          {renderItem(i, {
-            height: itemHeight,
-            width: '100%',
-          })}
-        </div>,
-      );
-    }
-
-    return items;
-  }, [startIndex, endIndex, itemHeight, renderItem]);
-
-  useEffect(() => {
-    containerRef.current?.scrollTo({
-      top: initialScrollOffset,
-      behavior: 'instant',
-    });
-  }, [initialScrollOffset]);
+    items.push(<VirtualListItem key={i} index={i} style={style} itemHeight={itemHeight} renderItem={renderItem} />);
+  }
 
   return (
     <div
@@ -83,9 +59,17 @@ const VirtualListVertical: React.FC<VirtualListVerticalProps> = ({
       style={{
         height,
         width,
+        position: 'relative',
+        overflow: 'auto',
       }}
     >
-      <div style={{ height: totalHeight }} className={clsx(s.root__inner, classNameInner)}>
+      <div
+        style={{
+          height: totalHeight,
+          position: 'relative',
+        }}
+        className={clsx(s.root__inner, classNameInner)}
+      >
         {items}
       </div>
     </div>

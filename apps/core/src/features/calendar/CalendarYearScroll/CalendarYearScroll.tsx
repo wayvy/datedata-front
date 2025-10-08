@@ -1,6 +1,6 @@
 import { VirtualListVertical } from '@repo/ui';
 import { yearID } from '@repo/utils/calendar';
-import React, { CSSProperties, useCallback } from 'react';
+import React, { CSSProperties, memo, useCallback, useMemo } from 'react';
 import { Temporal } from 'temporal-polyfill';
 
 import CalendarYear from './CalendarYear';
@@ -8,25 +8,26 @@ import { useContainerHeight } from './hooks/useContainerHeight';
 
 import s from './CalendarYearScroll.module.scss';
 
-const NOW = Temporal.Now.plainDateTimeISO();
-const START_YEAR = NOW.year;
 const TOTAL_YEARS = 500;
 const MIDDLE_INDEX = Math.floor(TOTAL_YEARS / 2);
-
-const getYearFromIndex = (index: number) => {
-  return START_YEAR + (index - MIDDLE_INDEX);
-};
 
 const CalendarYearScroll: React.FC = () => {
   const { containerRef, containerHeight } = useContainerHeight();
 
-  const renderItem = useCallback((index: number, style: CSSProperties) => {
-    return (
-      <div style={style} data-index={index}>
-        <CalendarYear yearId={yearID(getYearFromIndex(index))} />
-      </div>
-    );
-  }, []);
+  const startYear = useMemo(() => Temporal.Now.plainDateTimeISO().year, []);
+
+  const getYearFromIndex = useCallback((index: number) => startYear + (index - MIDDLE_INDEX), [startYear]);
+
+  const renderItem = useCallback(
+    (index: number, style: CSSProperties) => {
+      return (
+        <div style={style} data-index={index}>
+          <CalendarYear yearId={yearID(getYearFromIndex(index))} />
+        </div>
+      );
+    },
+    [getYearFromIndex],
+  );
 
   return (
     <div ref={containerRef} className={s.root}>
@@ -44,4 +45,4 @@ const CalendarYearScroll: React.FC = () => {
   );
 };
 
-export default CalendarYearScroll;
+export default memo(CalendarYearScroll);
