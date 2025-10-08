@@ -1,3 +1,4 @@
+import { CalendarYear as CalendarYearModel } from '@repo/models';
 import { VirtualListVertical } from '@repo/ui';
 import { yearID } from '@repo/utils/calendar';
 import React, { CSSProperties, memo, useCallback, useMemo } from 'react';
@@ -16,17 +17,35 @@ const CalendarYearScroll: React.FC = () => {
 
   const startYear = useMemo(() => Temporal.Now.plainDateTimeISO().year, []);
 
+  const yearModelCache = useMemo(() => new Map<number, CalendarYearModel>(), []);
+
   const getYearFromIndex = useCallback((index: number) => startYear + (index - MIDDLE_INDEX), [startYear]);
+
+  const getYearModel = useCallback(
+    (year: number) => {
+      if (!yearModelCache.has(year)) {
+        const model = new CalendarYearModel(yearID(year));
+
+        yearModelCache.set(year, model);
+      }
+
+      return yearModelCache.get(year)!;
+    },
+    [yearModelCache],
+  );
 
   const renderItem = useCallback(
     (index: number, style: CSSProperties) => {
+      const year = getYearFromIndex(index);
+      const model = getYearModel(year);
+
       return (
         <div style={style} data-index={index}>
-          <CalendarYear yearId={yearID(getYearFromIndex(index))} />
+          <CalendarYear model={model} />
         </div>
       );
     },
-    [getYearFromIndex],
+    [getYearFromIndex, getYearModel],
   );
 
   return (
@@ -36,6 +55,7 @@ const CalendarYearScroll: React.FC = () => {
           itemCount={TOTAL_YEARS}
           itemHeight={containerHeight}
           height={containerHeight}
+          overscan={3}
           initialScrollOffset={MIDDLE_INDEX * containerHeight}
           classNameInner={s.root__inner}
           renderItem={renderItem}

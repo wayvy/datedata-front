@@ -4,7 +4,7 @@ type UseVirtualListParams = {
   itemCount: number;
   itemHeight: number;
   height: number;
-  overscan?: number;
+  overscan: number;
   initialScrollOffset?: number;
 };
 
@@ -12,17 +12,26 @@ export function useVirtualList({
   itemCount,
   itemHeight,
   height,
-  overscan = 5,
+  overscan,
   initialScrollOffset = 0,
 }: UseVirtualListParams) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(initialScrollOffset);
   const visibleRangeRef = useRef({ start: 0, end: 0 });
+  const tickingRef = useRef(false);
 
   const totalHeight = itemCount * itemHeight;
 
   const onScroll = useCallback((e: UIEvent<HTMLDivElement>) => {
-    setScrollTop(e.currentTarget.scrollTop);
+    const scroll = e.currentTarget.scrollTop;
+
+    if (!tickingRef.current) {
+      window.requestAnimationFrame(() => {
+        setScrollTop(scroll);
+        tickingRef.current = false;
+      });
+      tickingRef.current = true;
+    }
   }, []);
 
   const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);

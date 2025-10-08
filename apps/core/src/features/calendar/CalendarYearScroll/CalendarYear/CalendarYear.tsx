@@ -1,37 +1,13 @@
 import { Text } from '@gravity-ui/uikit';
 import { CalendarYear as CalendarYearModel, CalendarMonth as CalendarMonthModel } from '@repo/models';
-import { ICalendarYear, YearID } from '@repo/types';
 import { memo, useMemo } from 'react';
 
 import CalendarMonth from './CalendarMonth';
 
 import s from './CalendarYear.module.scss';
 
-const MAX_YEARS_CACHE_SIZE = 100;
-const MAX_MONTHS_CACHE_SIZE = MAX_YEARS_CACHE_SIZE * 12;
-
-const yearModelCache = new Map<string, ICalendarYear>();
 const monthModelCache = new Map<string, CalendarMonthModel>();
-
-const getYearModel = (yearId: string): CalendarYearModel => {
-  const existing = yearModelCache.get(yearId);
-
-  if (existing) {
-    return existing;
-  }
-
-  const model = new CalendarYearModel(yearId);
-
-  yearModelCache.set(yearId, model);
-
-  if (yearModelCache.size > MAX_YEARS_CACHE_SIZE) {
-    const [oldestKey] = yearModelCache.keys();
-
-    yearModelCache.delete(oldestKey);
-  }
-
-  return model;
-};
+const MAX_MONTHS_CACHE_SIZE = 1200;
 
 const getMonthModel = (monthId: string): CalendarMonthModel => {
   const existing = monthModelCache.get(monthId);
@@ -53,8 +29,7 @@ const getMonthModel = (monthId: string): CalendarMonthModel => {
   return model;
 };
 
-const CalendarYear: React.FC<{ yearId: YearID }> = ({ yearId }) => {
-  const model = getYearModel(yearId);
+const CalendarYear: React.FC<{ model: CalendarYearModel }> = ({ model }) => {
   const monthsModels = useMemo(() => model.getMonthsKeys().map(getMonthModel), [model]);
 
   return (
@@ -71,4 +46,4 @@ const CalendarYear: React.FC<{ yearId: YearID }> = ({ yearId }) => {
   );
 };
 
-export default memo(CalendarYear);
+export default memo(CalendarYear, (prev, next) => prev.model.id === next.model.id);

@@ -1,8 +1,7 @@
 import clsx from 'clsx';
-import { memo, CSSProperties, ReactNode } from 'react';
+import { memo, CSSProperties, ReactNode, useCallback, useRef, useState, useEffect } from 'react';
 
 import { VirtualListItem } from './VirtualListItem';
-import { useVirtualList } from './hooks/useVirtualList';
 
 import s from './VirtualListVertical.module.scss';
 
@@ -13,7 +12,7 @@ type VirtualListVerticalProps = {
   itemHeight: number;
   height: number;
   width?: string;
-  overscan?: number;
+  overscan: number;
   renderItem: (index: number, style: CSSProperties) => ReactNode;
   initialScrollOffset?: number;
 };
@@ -25,17 +24,39 @@ const VirtualListVertical: React.FC<VirtualListVerticalProps> = ({
   itemHeight,
   height,
   width = '100%',
-  overscan = 2,
+  overscan,
   renderItem,
   initialScrollOffset = 0,
 }) => {
-  const { containerRef, onScroll, startIndex, endIndex, totalHeight } = useVirtualList({
-    itemCount,
-    itemHeight,
-    height,
-    overscan,
-    initialScrollOffset,
-  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollTop, setScrollTop] = useState(initialScrollOffset);
+  const ticking = useRef(false);
+
+  const totalHeight = itemCount * itemHeight;
+
+  const handleScroll = useCallback(() => {
+    if (!containerRef.current) {
+      return;
+    }
+    const scroll = containerRef.current.scrollTop;
+
+    if (!ticking.current) {
+      requestAnimationFrame(() => {
+        setScrollTop(scroll);
+        ticking.current = false;
+      });
+      ticking.current = true;
+    }
+  }, []);
+
+  const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
+  const endIndex = Math.min(itemCount - 1, Math.ceil((scrollTop + height) / itemHeight) + overscan);
+
+  useEffect(() => {
+    if (containerRef.current && initialScrollOffset > 0) {
+      containerRef.current.scrollTop = initialScrollOffset;
+    }
+  }, [initialScrollOffset]);
 
   const items = [];
 
@@ -54,22 +75,11 @@ const VirtualListVertical: React.FC<VirtualListVerticalProps> = ({
   return (
     <div
       ref={containerRef}
-      onScroll={onScroll}
+      onScroll={handleScroll}
       className={clsx(s.root, className)}
-      style={{
-        height,
-        width,
-        position: 'relative',
-        overflow: 'auto',
-      }}
+      style={{ height, width, position: 'relative', overflow: 'auto' }}
     >
-      <div
-        style={{
-          height: totalHeight,
-          position: 'relative',
-        }}
-        className={clsx(s.root__inner, classNameInner)}
-      >
+      <div style={{ height: totalHeight, position: 'relative' }} className={clsx(s.root__inner, classNameInner)}>
         {items}
       </div>
     </div>

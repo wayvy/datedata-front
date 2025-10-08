@@ -1,3 +1,5 @@
 .root {
   position: absolute;
+  contain: content;
+  will-change: transform;
 }
