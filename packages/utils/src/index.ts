@@ -8,3 +8,4 @@ export * from './gravity-ui';
 export * from './i18n';
 export * from './adaptivity';
 export * from './debounce';
+export * from './throttle';
