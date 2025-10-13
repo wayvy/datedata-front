@@ -3,7 +3,8 @@
   "extends": "@repo/typescript-config/base.json",
   "include": [
     "src/**/*",
-    "tsup.config.ts"
+    "tsup.config.ts",
+    "vitest.config.ts"
   ],
   "exclude": [
     "dist",

@@ -118,4 +118,10 @@ export default [
       'prettier/prettier': 'error',
     },
   },
+  {
+    files: ['**/*.test.tsx', '**/*.spec.tsx', '**/*.test.jsx', '**/*.spec.jsx'],
+    rules: {
+      'react/no-multi-comp': 'off',
+    },
+  },
 ];
