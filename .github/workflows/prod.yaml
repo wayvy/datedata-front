@@ -52,7 +52,7 @@ jobs:
 
   test:
     runs-on: self-hosted
-    needs: setup
+    needs: setup-env
     timeout-minutes: 5
     steps:
       - name: Actions checkout
@@ -62,7 +62,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'yarn'
+
+      - name: Install Yarn
+        run: npm install -g yarn
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
