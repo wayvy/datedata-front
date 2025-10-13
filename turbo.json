@@ -57,7 +57,6 @@
       ]
     },
     "test": {
-      "dependsOn": ["^build"],
       "outputs": []
     },
     "test:watch": {
@@ -65,7 +64,6 @@
       "persistent": true
     },
     "test:coverage": {
-      "dependsOn": ["^build"],
       "outputs": ["coverage/**"]
     }
   }
