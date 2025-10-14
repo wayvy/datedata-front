@@ -55,6 +55,16 @@
         "stylelint:fix",
         "^codestyle:fix"
       ]
+    },
+    "test": {
+      "outputs": []
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "test:coverage": {
+      "outputs": ["coverage/**"]
     }
   }
 }

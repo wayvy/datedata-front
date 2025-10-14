@@ -64,9 +64,33 @@ jobs:
           echo "host=${HOST}" >> "$GITHUB_OUTPUT"
           echo "namespace=${NAMESPACE}" >> "$GITHUB_OUTPUT"
 
-  build:
+  test:
     runs-on: self-hosted
     needs: setup-env
+    timeout-minutes: 5
+    steps:
+      - name: Actions checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: yarn test
+        env:
+          NODE_OPTIONS: "--max-old-space-size=2048"
+
+  build:
+    runs-on: self-hosted
+    needs: [setup-env, test]
     steps:
       - name: Docker build & push
         run: |

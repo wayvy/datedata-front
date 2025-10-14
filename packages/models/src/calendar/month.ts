@@ -18,10 +18,7 @@ const MONTH_NAMES = [
   'December',
 ];
 
-const getMonthNames = () => {
-  return MONTH_NAMES;
-};
-
+// todo: refactor to CalendarMonthView
 const MONTH_GRID_COLS = 7;
 const MONTH_GRID_ROWS = 6;
 const MONTH_GRID_DAYS = MONTH_GRID_COLS * MONTH_GRID_ROWS;
@@ -38,10 +35,14 @@ export class CalendarMonth implements ICalendarMonth {
     this.yearMonth = Temporal.PlainYearMonth.from(yearMonth);
   }
 
+  static getMonthNames(): string[] {
+    return MONTH_NAMES;
+  }
+
   getMonthName(): string {
     const monthIndex = this.yearMonth.month - 1;
 
-    return getMonthNames()[monthIndex] || '?';
+    return CalendarMonth.getMonthNames()[monthIndex] || '';
   }
 
   getMonthNameShort(): string {
