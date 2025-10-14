@@ -20,6 +20,7 @@ export const baseConfig = {
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{js,cjs,mjs,ts,mts,cts,jsx,tsx}'],
       exclude: [
         'coverage/**',
         'dist/**',
@@ -31,7 +32,15 @@ export const baseConfig = {
         '**/*{.,-}spec.{js,cjs,mjs,ts,tsx,jsx}',
         '**/__tests__/**',
         '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
-        '**/.{eslint,mocha,prettier}rc.{js,cjs,yml}'
+        '**/eslint.config.{js,ts,cjs,mjs}',
+        '**/.{eslint,mocha,prettier}rc.{js,cjs,yml,yaml,json}',
+        '**/.stylelintrc.{js,cjs,yml,yaml,json}',
+        '**/stylelint.config.{js,ts,cjs,mjs}',
+        '**/postcss.config.{js,ts,cjs,mjs}',
+        '**/tailwind.config.{js,ts,cjs,mjs}',
+        '**/*.{stories,story}.{js,cjs,mjs,ts,tsx,jsx}',
+        '**/.storybook/**',
+        '**/index.{js,cjs,mjs,ts,tsx,jsx}'
       ]
     }
   }
