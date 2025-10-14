@@ -1,7 +1,7 @@
 import { Sheet } from '@gravity-ui/uikit';
 import { EventFormFieldValues } from '@repo/types/calendar';
 import { CalendarEventForm } from '@repo/ui';
-import { dateToNextNearestHalfHour, gravityDateToTemporal, temporalToGravityDate } from '@repo/utils';
+import { getDefaultEndTime, gravityDateToTemporal, temporalToGravityDate } from '@repo/utils';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useMemo } from 'react';
 
@@ -20,10 +20,8 @@ const CreateEventSheet: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createEvent.openState.isOpen]);
 
-  const nearestStartDateTime = dateToNextNearestHalfHour(selectedDateNowTime);
-
   const startDate = temporalToGravityDate(selectedDateNowTime);
-  const endDate = temporalToGravityDate(nearestStartDateTime.add({ hours: 1 }));
+  const endDate = temporalToGravityDate(getDefaultEndTime(selectedDateNowTime));
 
   const onSubmit = useCallback(
     async (data: EventFormFieldValues) => {
