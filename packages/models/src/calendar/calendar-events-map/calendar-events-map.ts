@@ -5,16 +5,6 @@ import { Temporal } from 'temporal-polyfill';
 
 import { CalendarEvent } from '../calendar-event';
 
-const sortDateEvents = (events: CalendarEvent[]): CalendarEvent[] => {
-  return events.sort(
-    (a, b) => a.start.toZonedDateTime('UTC').epochMilliseconds - b.start.toZonedDateTime('UTC').epochMilliseconds,
-  );
-};
-
-const sortAllDayEvents = (events: CalendarEvent[]): CalendarEvent[] => {
-  return events.sort((a, b) => a.calendarId.localeCompare(b.calendarId));
-};
-
 export class CalendarEventsMap {
   map: ObservableMap<EventMode, ObservableMap<YearID, ObservableMap<MonthID, ObservableMap<DayID, CalendarEvent[]>>>>;
 
@@ -66,9 +56,9 @@ export class CalendarEventsMap {
     const dayEvents = monthMap.get(dayId) || [];
 
     if (event.allDay) {
-      monthMap.set(dayId, sortAllDayEvents([...dayEvents, event]));
+      monthMap.set(dayId, this.sortAllDayEvents([...dayEvents, event]));
     } else {
-      monthMap.set(dayId, sortDateEvents([...dayEvents, event]));
+      monthMap.set(dayId, this.sortDateEvents([...dayEvents, event]));
     }
   };
 
@@ -106,5 +96,15 @@ export class CalendarEventsMap {
 
       this.add(event);
     }
+  };
+
+  private sortDateEvents = (events: CalendarEvent[]): CalendarEvent[] => {
+    return events.sort(
+      (a, b) => a.start.toZonedDateTime('UTC').epochMilliseconds - b.start.toZonedDateTime('UTC').epochMilliseconds,
+    );
+  };
+
+  private sortAllDayEvents = (events: CalendarEvent[]): CalendarEvent[] => {
+    return events.sort((a, b) => a.calendarId.localeCompare(b.calendarId));
   };
 }
